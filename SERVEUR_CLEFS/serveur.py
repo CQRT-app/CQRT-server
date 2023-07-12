@@ -5,6 +5,7 @@ import socket
 import select
 import os
 import threading
+from time import sleep
 
 
 def get_ip():
@@ -58,6 +59,7 @@ def receive_message(client_socket):
             return False
         print("Header:", message_header)
         message_length = int(message_header.decode('utf-8').strip())
+        sleep(1)
         data = client_socket.recv(message_length)
         return {'header': message_header, 'data': data}
     except Exception as e:
@@ -116,6 +118,7 @@ def envoyer(fichier, client_socket):
 
 def traiter(requete, user):
     requete = requete.replace("'", "&apos;").replace("＇", "&apos;").replace("`", "&apos;").replace('"', '&quot;').replace('＂', '&quot;').split("\0")
+    print("REQUETE:", requete)
     if requete[0] == "ping":
         return "pong"
     elif requete[0] == "makeaccount":
